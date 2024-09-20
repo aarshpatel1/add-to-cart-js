@@ -9,8 +9,9 @@ html {
     font-size: 16px;
 }
 
-a {
-    text-decoration: none;
+h1,
+h2 {
+    margin: 12px 0;
 }
 
 .container {
@@ -20,62 +21,50 @@ a {
 
 .w-1 {
     width: 8.33%;
-    margin: 0 12px;
 }
 
 .w-2 {
     width: 16.66%;
-    margin: 0 12px;
 }
 
 .w-3 {
     width: 25%;
-    margin: 0 12px;
 }
 
 .w-4 {
     width: 33.33%;
-    margin: 0 12px;
 }
 
 .w-5 {
     width: 41.66%;
-    margin: 0 12px;
 }
 
 .w-6 {
     width: 50%;
-    margin: 0 12px;
 }
 
 .w-7 {
     width: 58.33%;
-    margin: 0 12px;
 }
 
 .w-8 {
     width: 66.66%;
-    margin: 0 12px;
 }
 
 .w-9 {
     width: 75%;
-    margin: 0 12px;
 }
 
 .w-10 {
     width: 83.33%;
-    margin: 0 12px;
 }
 
 .w-11 {
     width: 91.66%;
-    margin: 0 12px;
 }
 
 .w-12 {
     width: 100%;
-    margin: 0 12px;
 }
 
 .row {
@@ -83,6 +72,16 @@ a {
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#products {
+    padding: 24px 0;
 }
 
 .product-card {

@@ -1,12 +1,12 @@
 class Product {
     constructor(id, name, price, img_url) {
         if (this.constructor === Product) { //
-            throw new Error("Cannot initialize the Abstract Class")
+            throw new Error("Cannot initialize the Abstract Class");
         }
-        this.id = id
-        this.name = name
-        this.price = price
-        this.img_url = img_url
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.img_url = img_url;
     }
 
     displayProduct() { //
@@ -16,8 +16,8 @@ class Product {
 
 class PhysicalProduct extends Product {
     constructor(id, name, price, weight, img_url) {
-        super(id, name, price, img_url)
-        this.weight = weight
+        super(id, name, price, img_url);
+        this.weight = weight;
     }
 
     displayProduct() {
@@ -30,24 +30,23 @@ class PhysicalProduct extends Product {
                 <h2>${this.name}</h2>
                 <p>Weight: ${this.weight} Kg</p>
                 <div class="product-footer row">
-                    <span class="price">${this.price}</span>
-                    <button class="add-btn row" onclick="shop.addtocart(${this.id})">
+                    <span class="price">$ ${this.price}</span>
+                    <button class="add-btn row" onclick="shop.addToCart(${this.id})">
                         <span>Add to Cart</span>
                         <iconify-icon icon="mdi:cart-outline" width="24" height="24"></iconify-icon>
                     </button>
                 </div>
             </div>
-        </div>
-        `
+        </div>`;
     }
 }
 
-
 class DigitalProduct extends Product {
     constructor(id, name, price, fileSize, img_url) {
-        super(id, name, price, img_url)
-        this.fileSize = fileSize
+        super(id, name, price, img_url);
+        this.fileSize = fileSize;
     }
+
     displayProduct() {
         return `
         <div class="product-card w-3">
@@ -56,7 +55,7 @@ class DigitalProduct extends Product {
             </div>
             <div class="product-description">
                 <h2>${this.name}</h2>
-                <p>File Size: ${this.fileSize} Kg</p>
+                <p>File Size: ${this.fileSize} MB</p>
                 <div class="product-footer row">
                     <span class="price">${this.price}</span>
                     <button class="add-btn row" onclick="shop.addToCart(${this.id})">
@@ -65,151 +64,109 @@ class DigitalProduct extends Product {
                     </button>
                 </div>
             </div>
-        </div>
-        `
+        </div>`;
     }
 }
 
-
 class CartItem {
     constructor(product, quantity = 1) {
-        this.product = product
-        this.quantity = quantity
+        this.product = product;
+        this.quantity = quantity;
     }
 
-    incrementQuality() {
-        this.quantity++
+    incrementQuantity() {
+        this.quantity++;
     }
 
     getTotalPrice() {
-        return this.product.price * this.quantity
+        return this.product.price * this.quantity;
     }
 
     displayCartItem() {
         return `
         <tr>
             <td>${this.product.name}</td>
-            <td><img src="${this.product.img_url}" alt="product image"></td>
-            <td>${this.quantity}</td>
+            <td><img src="${this.product.img_url}" alt="product image" height="25%" width="25%"></td>
             <td>${this.product.price}</td>
+            <td>${this.quantity}</td>
             <td>${this.getTotalPrice()}</td>
-        </tr>
-        `
+        </tr>`;
     }
 }
 
-
 class Cart {
     constructor() {
-        this.items = []
+        this.items = [];
     }
 
     addProduct(product) {
-        const exisitingItem = this.items.find( //
-            (item) => item.product.id = product.id
-        )
-
-        if (exisitingItem) {
-            exisitingItem.incrementQuality()
+        const existingItem = this.items.find(item => item.product.id === product.id); //
+        if (existingItem) {
+            existingItem.incrementQuantity();
         } else {
-            this.items.push(new CartItem(product))
+            this.items.push(new CartItem(product));
         }
-        this.displayCart()
+        this.displayCart();
     }
 
     displayCart() {
-        const cartItem = document.getElementsByTagName("tbody")
-        cartItem.innerHTML = ""
-        this.items.forEach((item) => {
-            cartItem.innerHTML += item.displayCartItem()
-        })
+        const cartItems = document.querySelector("tbody");
+        cartItems.innerHTML = "";
+        this.items.forEach(item => { //
+            cartItems.innerHTML += item.displayCartItem();
+        });
     }
 
     checkout() {
         if (this.items.length === 0) {
-            alert("Your cart is empty.")
+            alert("Your cart is empty.");
         } else {
-            alert(`Checkout ${this.items.length}. Total Price: ${this.getTotal()}`)
-            this.items = []
-            this.displayCart()
+            alert(`Checkout ${this.items.length} items. Total Price: $${this.getTotal()}`);
+            this.items = [];
+            this.displayCart();
         }
     }
 
     getTotal() {
-        return this.items.reduce((total, item) => total + item.getTotalPrice(), 0) //
+        return this.items.reduce((total, item) => total + item.getTotalPrice(), 0); //
     }
 }
-
 
 class Shop {
     constructor(products) {
-        this.products = products
-        this.cart = new Cart()
+        this.products = products;
+        this.cart = new Cart();
     }
 
-    displayProduct() {
-        const productList = document.getElementById("products")
-        productList.innerHTML = ""
-        this.products.forEach((product) => {
-            productList.innerHTML += product.displayProduct()
+    displayProducts() {
+        const productList = document.getElementById("products");
+        productList.innerHTML = "";
+        this.products.forEach(product => { //
+            productList.innerHTML += product.displayProduct();
         });
     }
 
-    addToCart(productID) {
-        const product = this.products.find((p) => p.id === productID)
-        this.cart.addProduct(product)
+    addToCart(productId) {
+        const product = this.products.find(p => p.id === productId); //
+        this.cart.addProduct(product);
     }
 
     checkout() {
-        this.cart.checkout()
+        this.cart.checkout();
     }
 
     init() {
-        this.displayProduct()
-        document.getElementById("checkout-btn").addEventListener("click", () => {
-            this.checkout()
-        })
+        this.displayProducts();
+        document.getElementById("checkout-btn").addEventListener("click", () => this.checkout());
     }
 }
 
-
+// Sample product data
 const products = [
-    new PhysicalProduct(
-        1,
-        "Laptop",
-        1500,
-        2.4,
-        "https://www.apple.com/v/macbook-air/s/images/overview/routers/compare_mbp_14_16__f7ovwhzitq6i_large.png"
-    ),
-    new PhysicalProduct(
-        1,
-        "Laptop",
-        1500,
-        2.4,
-        "https://www.apple.com/v/macbook-air/s/images/overview/routers/compare_mbp_14_16__f7ovwhzitq6i_large.png"
-    ),
-    new PhysicalProduct(
-        1,
-        "Laptop",
-        1500,
-        2.4,
-        "https://www.apple.com/v/macbook-air/s/images/overview/routers/compare_mbp_14_16__f7ovwhzitq6i_large.png"
-    ),
-    new PhysicalProduct(
-        1,
-        "Laptop",
-        1500,
-        2.4,
-        "https://www.apple.com/v/macbook-air/s/images/overview/routers/compare_mbp_14_16__f7ovwhzitq6i_large.png"
-    ),
-    new PhysicalProduct(
-        1,
-        "Laptop",
-        1500,
-        2.4,
-        "https://www.apple.com/v/macbook-air/s/images/overview/routers/compare_mbp_14_16__f7ovwhzitq6i_large.png"
-    ),
+    new PhysicalProduct(1, "Display", 1000, 2.4, "https://www.apple.com/v/imac/p/images/overview/routers/compare_imac__f7hnie54ekii_large.png"),
+    new PhysicalProduct(2, "Headphone", 500, 0.5, "https://www.apple.com/v/airpods-max/g/images/overview/contrast/airpods_max_midnight__ddy8oa1y3y4i_large.png"),
+    new PhysicalProduct(3, "Watch", 700, 0.2, "https://www.apple.com/v/apple-watch-series-10/a/images/overview/contrast/product_s10__d7ch2jhtbhme_xlarge.png")
 ];
 
-const shop = new Shop(products)
-shop.init()
+const shop = new Shop(products);
+shop.init();
